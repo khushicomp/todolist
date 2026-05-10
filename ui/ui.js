@@ -1,91 +1,185 @@
-import { addTodo, deleteTodo, toggleTodo, projects } from "../logic/manager.js";
+import { addProject, addTodo, deleteTodo,deleteProject, toggleTodo, projects } from "../logic/manager.js";
+import "./style.css";
 
-const formdiv=document.createElement("div");
+let currentProjectId = projects[0]?.id;
 
-const titleInput=document.createElement("input");
-titleInput.placeholder="Title";
+function renderprojects(projects) {
+    const container = document.getElementById("app");
+    container.innerHTML = "";
 
-const dateInput=document.createElement("input");
-dateInput.type="date";
+    // App Container
+    const appContainer = document.createElement("div");
+    appContainer.className = "app-container";
 
-const priorityInput=document.createElement("select");
+    // Sidebar
+    const sidebar = document.createElement("aside");
+    sidebar.className = "sidebar";
 
-["low", "medium", "high"].forEach(p=>{
-    const option=document.createElement("option");
-    option.value=p;
-    option.textContent=p;
-    priorityInput.appendChild(option);
-});
+    const sidebarTitle = document.createElement("h2");
+    sidebarTitle.textContent = "Projects";
+    sidebar.appendChild(sidebarTitle);
 
-const addBtn=document.createElement("button");
-addBtn.textContent="Add Todo";
+    const projectList = document.createElement("div");
+    projectList.className = "project-list";
 
-formdiv.appendChild(titleInput);
-formdiv.appendChild(dateInput);
-formdiv.appendChild(priorityInput);
-formdiv.appendChild(addBtn);
-container.appendChild(formdiv);
+    projects.forEach(project => {
+        const projectBtn = document.createElement("button");
+        projectBtn.className = "project-btn";
+        if (project.id === currentProjectId) {
+            projectBtn.classList.add("active");
+        }
+        projectBtn.textContent = project.name;
+        projectBtn.addEventListener("click", () => {
+            currentProjectId = project.id;
+            renderprojects(projects);
+        });
+        projectList.appendChild(projectBtn);
+    });
+    sidebar.appendChild(projectList);
 
-addBtn.addEventListener("click", ()=>{
-    const title=titleInput.value;
-    const date=dateInput.value;
-    const priority=priorityInput.value;
+    const addProjectForm = document.createElement("div");
+    addProjectForm.className = "add-project-form";
 
-    if(!title||!date) return;
+    const projectInput = document.createElement("input");
+    projectInput.type = "text";
+    projectInput.placeholder = "New Project";
 
-    const project=projects[0];
+    const projectBtn = document.createElement("button");
+    projectBtn.className = "primary-btn";
+    projectBtn.textContent = "Add Project";
 
-    addTodo(project.id, title, "", date, priority);
+    projectBtn.addEventListener("click", () => {
+        const name = projectInput.value.trim();
+        if (!name) return;
+        const newProject = addProject(name);
+        projectInput.value = "";
+        currentProjectId = newProject.id;
+        renderprojects(projects);
+    });
 
-    renderprojects(projects);
-})
+    addProjectForm.appendChild(projectInput);
+    addProjectForm.appendChild(projectBtn);
+    sidebar.appendChild(addProjectForm);
 
-function renderprojects(projects){
-    const container=document.getElementById("app");
-    container.innerHTML="";
+    appContainer.appendChild(sidebar);
 
-    projects.forEach(project =>{
-        const projectDiv=document.createElement("div");
+    // Main Content
+    const mainContent = document.createElement("main");
+    mainContent.className = "main-content";
 
-        const title=document.createElement("h2");
-        title.textContent=project.name;
+    const activeProject = projects.find(p => p.id === currentProjectId);
 
-        projectDiv.appendChild(title);
+    if (activeProject) {
+        const mainHeader = document.createElement("div");
+        mainHeader.className = "main-header";
+        const mainTitle = document.createElement("h1");
+        mainTitle.textContent = activeProject.name;
+        mainHeader.appendChild(mainTitle);
+        mainContent.appendChild(mainHeader);
 
-        project.todos.forEach(todo=>{
-            const todoDiv=document.createElement("div");
+        // Add Todo Form
+        const todoForm = document.createElement("div");
+        todoForm.className = "add-todo-form";
 
-            const checkbox=document.createElement("input");
-            checkbox.type="checkbox";
-            checkbox.checked=todo.completed;
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.placeholder = "Task title";
 
-            checkbox.addEventListener("change", ()=>{
-                toggleTodo(project.id, todo.id);
-                renderprojects(projects);
-            });
+        const dateInput = document.createElement("input");
+        dateInput.type = "date";
 
-            const text=document.createElement("span");
-            text.textContent=`${todo.title} - ${todo.duedate}`;
-            if(todo.completed){
-                text.style.textDecoration="line-through";
-            }
-
-            const deletebtn=document.createElement("button");
-            deletebtn.textContent="Delete";
-
-            deletebtn.addEventListener("click", ()=>{
-                deleteTodo(project.id, todo.id);
-                renderprojects(projects);
-            })
-
-            todoDiv.appendChild(checkbox);
-            todoDiv.appendChild(text);
-            todoDiv.appendChild(deletebtn);
-            projectDiv.appendChild(todoDiv);
+        const prioritySelect = document.createElement("select");
+        ["low", "medium", "high"].forEach(p => {
+            const option = document.createElement("option");
+            option.value = p;
+            option.textContent = p.charAt(0).toUpperCase() + p.slice(1);
+            prioritySelect.appendChild(option);
         });
 
-        container.appendChild(projectDiv);
-    });
+        const addTodoBtn = document.createElement("button");
+        addTodoBtn.className = "primary-btn";
+        addTodoBtn.textContent = "Add Task";
+
+        addTodoBtn.addEventListener("click", () => {
+            const title = titleInput.value.trim();
+            const date = dateInput.value;
+            const priority = prioritySelect.value;
+
+            if (!title || !date) return;
+
+            addTodo(activeProject.id, title, "", date, priority);
+            renderprojects(projects);
+        });
+
+        todoForm.appendChild(titleInput);
+        todoForm.appendChild(dateInput);
+        todoForm.appendChild(prioritySelect);
+        todoForm.appendChild(addTodoBtn);
+        mainContent.appendChild(todoForm);
+
+        // Todo List
+        const todoListDiv = document.createElement("div");
+        todoListDiv.className = "todo-list";
+
+        activeProject.todos.forEach(todo => {
+            const todoCard = document.createElement("div");
+            todoCard.className = "todo-card";
+            if (todo.completed) {
+                todoCard.classList.add("completed");
+            }
+
+            const priorityIndicator = document.createElement("div");
+            priorityIndicator.className = `priority-indicator priority-${todo.priority || 'none'}`;
+            todoCard.appendChild(priorityIndicator);
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "custom-checkbox";
+            checkbox.checked = todo.completed;
+            checkbox.addEventListener("change", () => {
+                toggleTodo(activeProject.id, todo.id);
+                renderprojects(projects);
+            });
+            todoCard.appendChild(checkbox);
+
+            const contentDiv = document.createElement("div");
+            contentDiv.className = "todo-content";
+
+            const titleSpan = document.createElement("span");
+            titleSpan.className = "todo-text";
+            titleSpan.textContent = todo.title;
+
+            const dateSpan = document.createElement("span");
+            dateSpan.className = "todo-date";
+            dateSpan.textContent = todo.duedate;
+
+            contentDiv.appendChild(titleSpan);
+            contentDiv.appendChild(dateSpan);
+            todoCard.appendChild(contentDiv);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.textContent = "✕";
+            deleteBtn.title = "Delete task";
+            deleteBtn.addEventListener("click", () => {
+                deleteTodo(activeProject.id, todo.id);
+                renderprojects(projects);
+            });
+            todoCard.appendChild(deleteBtn);
+
+            todoListDiv.appendChild(todoCard);
+        });
+
+        mainContent.appendChild(todoListDiv);
+    } else {
+        const noProjectMsg = document.createElement("p");
+        noProjectMsg.textContent = "Select a project or create a new one.";
+        noProjectMsg.style.color = "var(--text-muted)";
+        mainContent.appendChild(noProjectMsg);
+    }
+
+    appContainer.appendChild(mainContent);
+    container.appendChild(appContainer);
 }
 
-export {renderprojects};
+export { renderprojects };
