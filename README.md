@@ -18,6 +18,7 @@ HTML5
 CSS3
 LocalStorage API
 Project Structure
+
 src/
 │
 ├── logic/
@@ -33,6 +34,7 @@ src/
 │   └── style.css
 │
 └── index.js
+
 Installation
 
 Clone the repository and install dependencies:
