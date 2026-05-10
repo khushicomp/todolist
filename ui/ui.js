@@ -1,4 +1,44 @@
-import { deleteTodo, toggleTodo, projects } from "../logic/manager.js";
+import { addTodo, deleteTodo, toggleTodo, projects } from "../logic/manager.js";
+
+const formdiv=document.createElement("div");
+
+const titleInput=document.createElement("input");
+titleInput.placeholder="Title";
+
+const dateInput=document.createElement("input");
+dateInput.type="date";
+
+const priorityInput=document.createElement("select");
+
+["low", "medium", "high"].forEach(p=>{
+    const option=document.createElement("option");
+    option.value=p;
+    option.textContent=p;
+    priorityInput.appendChild(option);
+});
+
+const addBtn=document.createElement("button");
+addBtn.textContent="Add Todo";
+
+formdiv.appendChild(titleInput);
+formdiv.appendChild(dateInput);
+formdiv.appendChild(priorityInput);
+formdiv.appendChild(addBtn);
+container.appendChild(formdiv);
+
+addBtn.addEventListener("click", ()=>{
+    const title=titleInput.value;
+    const date=dateInput.value;
+    const priority=priorityInput.value;
+
+    if(!title||!date) return;
+
+    const project=projects[0];
+
+    addTodo(project.id, title, "", date, priority);
+
+    renderprojects(projects);
+})
 
 function renderprojects(projects){
     const container=document.getElementById("app");
