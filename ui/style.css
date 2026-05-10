@@ -1,27 +1,37 @@
-/* Modern UI Variables */
+/* Light, Aesthetic, Cozy Theme Variables */
 :root {
-  --primary-color: #db4c3f; /* Todoist red */
-  --primary-hover: #c53727;
-  --bg-sidebar: #fafafa;
-  --bg-main: #ffffff;
-  --text-main: #202020;
-  --text-muted: #808080;
-  --border-color: #f0f0f0;
-  --border-hover: #e0e0e0;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --border-radius: 8px;
+  --bg-main: #FAF9F6;
+  --bg-sidebar: #F5F1EA;
+  --bg-card: #FFFFFF;
   
-  --priority-high: #d1453b;
-  --priority-medium: #eb8909;
-  --priority-low: #246fe0;
-  --priority-none: #cccccc;
+  --accent-gradient: linear-gradient(135deg, #FFB5A7, #F687B3);
+  --accent-color: #FFB5A7;
+  --accent-glow: rgba(246, 135, 179, 0.3);
+  
+  --border-subtle: #EDE8E0;
+  --border-strong: #D4CFC7;
+  
+  --text-primary: #2D2A26;
+  --text-secondary: #8B8680;
+  --text-muted: #B8B2A8;
+  
+  --priority-high: #F87171;
+  --priority-medium: #FBBF24;
+  --priority-low: #6EE7B7;
+  
+  --shadow-subtle: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.06);
+  --shadow-button: 0 4px 14px var(--accent-glow);
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: var(--text-main);
+  font-family: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
   background-color: var(--bg-main);
+  min-height: 100vh;
+  line-height: 1.6;
 }
 
 * {
@@ -36,120 +46,187 @@ body {
 
 /* Sidebar */
 .sidebar {
-  width: 280px;
+  width: 288px; /* w-72 */
   background-color: var(--bg-sidebar);
-  border-right: 1px solid var(--border-color);
-  padding: 20px;
+  border-right: none;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease-out;
+  z-index: 10;
 }
 
 .sidebar h2 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar h2::after {
+  content: '🌸';
+  font-size: 14px;
 }
 
 .project-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   flex: 1;
   overflow-y: auto;
 }
 
+/* Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+}
+
 .project-btn {
-  background: none;
+  background: transparent;
   border: none;
   text-align: left;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 10px 16px;
+  border-radius: 16px;
   cursor: pointer;
-  font-size: 14px;
-  color: var(--text-main);
-  transition: background-color 0.2s;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.3s ease-out;
 }
 
 .project-btn:hover {
-  background-color: #eeeeee;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .project-btn.active {
-  background-color: #eeeeee;
-  font-weight: 600;
+  background: var(--accent-gradient);
+  color: white;
+  box-shadow: var(--shadow-button);
 }
 
 .add-project-form {
-  margin-top: 20px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 /* Main Content */
 .main-content {
   flex: 1;
-  padding: 40px 60px;
+  padding: 48px;
   overflow-y: auto;
-  max-width: 900px;
+  max-width: 896px; /* max-w-4xl */
   margin: 0 auto;
   width: 100%;
 }
 
 .main-header {
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .main-header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 36px;
   font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-/* Forms general styling */
-input[type="text"], input[type="date"], select {
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+.main-header h1::after {
+  content: 'Stay focused, stay calm ✨';
+  display: block;
   font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: normal;
+}
+
+/* Forms General Styling */
+input[type="text"], input[type="date"], select {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 15px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease-out;
+}
+
+input[type="text"]::placeholder, input[type="date"]::placeholder {
+  color: var(--text-muted);
+}
+
+/* Calendar icon color in light mode */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 input[type="text"]:focus, input[type="date"]:focus, select:focus {
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 181, 167, 0.2);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23B8B2A8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 44px;
 }
 
 button.primary-btn {
-  background-color: var(--primary-color);
+  background: var(--accent-gradient);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease-out;
+  box-shadow: var(--shadow-button);
 }
 
 button.primary-btn:hover {
-  background-color: var(--primary-hover);
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px var(--accent-glow);
+}
+
+button.primary-btn:active {
+  transform: scale(0.98);
 }
 
 /* Add Todo Form */
 .add-todo-form {
   display: flex;
   gap: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 48px;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .add-todo-form input[type="text"] {
   flex: 1;
-  min-width: 200px;
+  min-width: 250px;
 }
 
 /* Todo List & Cards */
@@ -162,18 +239,22 @@ button.primary-btn:hover {
 .todo-card {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background-color: white;
-  box-shadow: var(--card-shadow);
-  transition: box-shadow 0.2s, transform 0.2s;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease-out;
   gap: 16px;
 }
 
 .todo-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.todo-card.completed {
+  opacity: 0.6;
 }
 
 .todo-card.completed .todo-text {
@@ -181,50 +262,64 @@ button.primary-btn:hover {
   color: var(--text-muted);
 }
 
-.todo-card.completed {
-  opacity: 0.7;
-}
-
-/* Priority styling using pseudo-elements or borders */
+/* Priority Dots */
 .priority-indicator {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.priority-high { background-color: var(--priority-high); }
-.priority-medium { background-color: var(--priority-medium); }
-.priority-low { background-color: var(--priority-low); }
+.priority-high { 
+  background-color: var(--priority-high); 
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+}
+.priority-medium { 
+  background-color: var(--priority-medium); 
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+.priority-low { 
+  background-color: var(--priority-low); 
+  box-shadow: 0 0 10px rgba(110, 231, 183, 0.4);
+}
 
-/* Checkbox */
+/* Custom Checkbox */
 .custom-checkbox {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 2px solid var(--text-muted);
+  border: 2px solid var(--border-strong);
   cursor: pointer;
   appearance: none;
   outline: none;
   position: relative;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition: all 0.3s ease-out;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.custom-checkbox:hover {
+  border-color: var(--accent-color);
 }
 
 .custom-checkbox:checked {
-  background-color: var(--text-muted);
-  border-color: var(--text-muted);
+  background: var(--accent-gradient);
+  border-color: transparent;
 }
 
 .custom-checkbox:checked::after {
-  content: '✓';
+  content: '';
   position: absolute;
-  color: white;
-  font-size: 12px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  top: 4px;
+  left: 8px;
 }
 
+/* Todo Content */
 .todo-content {
   flex: 1;
   display: flex;
@@ -233,29 +328,59 @@ button.primary-btn:hover {
 }
 
 .todo-text {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: all 0.3s ease-out;
+  color: var(--text-primary);
 }
 
 .todo-date {
   font-size: 12px;
   color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
+.todo-date::before {
+  content: '📅';
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Delete Button */
 button.delete-btn {
-  background: none;
+  background-color: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  transition: background-color 0.2s, color 0.2s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+  transition: all 0.3s ease-out;
+  opacity: 0;
+}
+
+.todo-card:hover button.delete-btn {
+  opacity: 1;
 }
 
 button.delete-btn:hover {
-  background-color: #ffeeee;
-  color: var(--primary-color);
+  background-color: #FEE2E2;
+  color: #EF4444;
+  transform: scale(1.1);
+}
+
+/* Empty State / No Project Selected */
+.main-content > p {
+  color: var(--text-muted);
+  font-size: 16px;
+  text-align: center;
+  margin-top: 64px;
 }
 
 /* Responsive */
@@ -267,12 +392,22 @@ button.delete-btn:hover {
   .sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px;
-    max-height: 30vh;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 24px;
+    max-height: 40vh;
+    box-shadow: none;
   }
 
   .main-content {
-    padding: 20px;
+    padding: 32px 24px;
+  }
+  
+  .add-todo-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .add-todo-form input[type="text"] {
+    min-width: 100%;
   }
 }

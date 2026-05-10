@@ -23,6 +23,10 @@ function renderprojects(projects) {
     projectList.className = "project-list";
 
     projects.forEach(project => {
+
+        const projectItem=document.createElement("div");
+        projectItem.className= "project-item";
+
         const projectBtn = document.createElement("button");
         projectBtn.className = "project-btn";
         if (project.id === currentProjectId) {
@@ -33,7 +37,30 @@ function renderprojects(projects) {
             currentProjectId = project.id;
             renderprojects(projects);
         });
-        projectList.appendChild(projectBtn);
+
+        const deleteProjectBtn=document.createElement("button");
+        deleteProjectBtn.className="delete-project-btn";
+        deleteProjectBtn.textContent="X";
+
+        deleteProjectBtn.title="Delete Project";
+        
+        deleteProjectBtn.addEventListener("click",(e)=>{
+            e.stopPropagation();
+
+            deleteProject(project.id);
+
+            if(currentProjectId===project.id){
+                currentProjectId=projects[0]?.id;
+            }
+
+            renderprojects(projects);
+        });
+
+        projectItem.appendChild(projectBtn);
+        projectItem.appendChild(deleteProjectBtn);
+
+        projectList.appendChild(projectItem);
+        
     });
     sidebar.appendChild(projectList);
 
@@ -57,6 +84,7 @@ function renderprojects(projects) {
         renderprojects(projects);
     });
 
+    
     addProjectForm.appendChild(projectInput);
     addProjectForm.appendChild(projectBtn);
     sidebar.appendChild(addProjectForm);

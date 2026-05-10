@@ -16,10 +16,14 @@ function getProject(projectId){
 }
 
 function deleteProject(projectId){
-    projects=projects.filter(
-        project =>project.id!=projectId
+    const index = projects.findIndex(
+        project=>project.id===projectId
     );
-    saveProjects(project);
+
+    if(index!==-1){
+        projects.splice(index,1);
+    }
+    saveProjects(projects);
 }
 
 
